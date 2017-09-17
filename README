@@ -1,0 +1,56 @@
+================================================================================
+							Creteanu Cristian
+								  313CA
+================================================================================
+
+Codul sursa are 3 functii: octToDec, care transforma un numar din octal in
+ zecimal, decToOct, care transforma un numar din zecimal in octal, si functia
+ main.
+
+Se citesc de la tastatura comenzi.
+
+Daca primul cuvant al string-ului citit este "load", se salveaza numele arhivei
+ si se creeaza un fisier binar cu acest nume. Se citeste pe rand fiecare linie
+ din fisierul file_ls si vor fi parsate liniile ce corespund fisierelor
+ normale. Iau pe rand cu strtok fiecare coloana a liniei. Se configureaza
+ permisiunile in octal analizand permisiunile in mod literal si le adaug in
+ header. Adaug in header si numele utilizatorului si al grupului. Salvez string
+-urile ce reprezinta data si ora pentru a fi analizate ulterior. Adaug in
+ header numele fisierului si linkname. Calculez dimensiunea fisierului: il
+ deschid, mut pointerul la finalul sau, apelez functia ftell si ma intorc la
+ inceput, transform in octal, dupa care adaug in header. Setez typeflag la 48
+('0') si magic la "GNUtar ". Calculez mtime luand pe rand fiecare componenta a
+ datei si a orei, salvate precedent(in "data" si in "ora"), si adaugand-o in
+ structura tm, dupa care apelez functia mktime a bibliotecii time.h, transform
+ in octal si salvez in header. Se deschide fisierul usermap.txt pentru gasirea
+ uid si gid. Citesc linie cu linie fisierul si caut in linie numele user-ului.
+ Daca nu s-a gasit, se trece la urmatoarea liniei. Daca s-a gasit, iau uid si
+ gid, le transform in octal si le salvez in header. Pentru calcularea chksum,
+ am facut suma tuturor octetilor din header, dupa care am adaugat valoarea
+ codului ASCII a ' '(space) de 8 ori, deoarece se presupune ca, inainte de
+ calcularea chksum, acesta este un string de 8 spatii. Apoi transform suma in
+ octal si salvez in header. Scriu in arhiva uniunea record care reprezinta
+ header-ul fisierului(Inainte de uid, gid, size, mode, chksum am pus zerouri
+ pentru a completa pana la sizeof(fiecare dintre ele) - 1, deoarece asa am
+ vazut ca apare intr-o arhiva creata prin comanda tar -cvf). Am deschis
+ fisierul al carui header tocmai a fost scris si am adaugat pe rand cate 512
+ octeti din acesta in arhiva.
+
+Daca primul cuvant al string-ului citit este "list", se salveaza numele arhivei
+ si se deschide pentru citire. Pana la terminarea arhivei, se citeste header-ul
+ fisierului, se afiseaza numele acestuia, apoi se citesc pe rand cate 512
+ octeti din fisier pana la header-ul urmatorului fisier. Numarul de blocuri de
+ 512 octeti din arhiva care reprezinta fisierul este dimensiunea acestuia in
+ zecimal / 512 + 1.
+
+Daca primul cuvant al string-ului citit este "get", se salveaza numele arhivei
+ si cel al fisierului cautat si se deschide arhiva pentru citire. Pana la
+ terminarea arhivei, se citeste cate o uniune record pana cand se gaseste
+ header-ul fisierului cautat. Se ia din header dimensiunea fisierului si se
+ transforma in zecimal(blocks). Apoi, se parcurg urmatorii blocks / 512 + 1
+ blocuri de 512 octeti si se salveaza fiecare intr-un string. Apoi se afiseaza
+ acest string caracter cu caracter, pana la afisarea continutului integral al
+ fisierului cautat.
+
+Daca string-ul citit este "quit" (sau oricare altul care difera de cele 3 de
+ mai sus pentru a evita erori), se iese din program. 
