@@ -1,2 +1,10 @@
 In order to run the program, you need to have two files: usermap.txt, which is the output of the cat /etc/passwd command,
 						    and file_ls, which is the output of the ls -la –time-style=full-iso command
+
+
+The program has three functions:
+	load *archivename* - creates an archive with all the files in file_ls
+	list *archivename* - lists the files in the archive
+	get *archivename* *filename* - extracts the content of the *filename* file and prints it
+	(use echo -e “get archivename filename.jpg\nquit” | ./my_tar > result.jpg for binary files like photos)
+	quit - closes the program
